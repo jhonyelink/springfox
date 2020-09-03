@@ -35,6 +35,7 @@ import io.swagger.models.properties.Property;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
+import org.springframework.http.HttpMethod;
 import springfox.documentation.schema.ModelReference;
 import springfox.documentation.service.ApiDescription;
 import springfox.documentation.service.ApiInfo;
@@ -153,11 +154,18 @@ public abstract class ServiceModelToSwagger2Mapper {
     };
   }
 
+  public String getUUID(ApiDescription api) {
+      HttpMethod httpMethod = api.getOperations().get(0).getMethod();
+      String controller = api.getGroupName().or("default-controller");
+
+      return api.getPath() + String.format(" [%s %s]", httpMethod, controller);
+  }
+
   protected Map<String, Path> mapApiListings(Multimap<String, ApiListing> apiListings) {
     Map<String, Path> paths = newTreeMap();
     for (ApiListing each : apiListings.values()) {
       for (ApiDescription api : each.getApis()) {
-        paths.put(api.getPath(), mapOperations(api, Optional.fromNullable(paths.get(api.getPath()))));
+        paths.put(getUUID(api), mapOperations(api, Optional.fromNullable(paths.get(api.getPath()))));
       }
     }
     return paths;

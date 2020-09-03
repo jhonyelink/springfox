@@ -45,3 +45,18 @@ compileJava {
           "-Amapstruct.unmappedTargetPolicy=ERROR"
   ]
 }
+
+apply plugin: 'maven'
+
+uploadArchives {
+  repositories {
+    mavenDeployer {
+      repository(url: "https://repository.kyligence.io/repository/maven-releases/") {
+        authentication(userName: "admin", password: "Kyligence@2016")
+      }
+      pom.version = "2.9.2-kylin-r1"
+      pom.artifactId = "springfox-swagger2"
+      pom.groupId = "io.springfox"
+    }
+  }
+}

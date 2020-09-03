@@ -16,7 +16,12 @@ buildscript {
     classpath "org.jfrog.buildinfo:build-info-extractor-gradle:4.7.4"
     classpath "org.asciidoctor:asciidoctor-gradle-plugin:1.5.3"
     classpath "org.ajoberstar:gradle-git:1.7.2"
+    classpath "com.netflix.nebula:gradle-extra-configurations-plugin:5.0.3"
   }
+}
+
+plugins {
+  id "nebula.optional-base" version "5.0.3"
 }
 
 apply from: "$rootDir/gradle/dependencies.gradle"
@@ -39,7 +44,7 @@ subprojects {
   //Not strictly groovy projects but useful for the IDE to recognise groovy test sources
   apply plugin: 'groovy' //gradle groovy plugin extends the java plugin
   apply plugin: 'com.github.adrianbk.jvmsrc'
-  apply plugin: 'checkstyle'
+  //apply plugin: 'checkstyle'
 
   javadoc {
     options.encoding = 'UTF-8'
@@ -54,11 +59,11 @@ subprojects {
     jcenter()
   }
 
-  checkstyle {
-    configFile = file("$rootDir/config/checkstyle.xml")
-  }
+  //checkstyle {
+    //configFile = file("$rootDir/config/checkstyle.xml")
+  //}
 
-  checkstyleMain.source = "src/main/java"
+  //checkstyleMain.source = "src/main/java"
 
   test {
     maxParallelForks = 2
@@ -78,7 +83,7 @@ subprojects {
   sourceCompatibility = jdkVersion
   targetCompatibility = jdkVersion
   group = 'io.springfox'
-  version = project.rootProject.version
+  version = '2.9.2'
 
   task allDeps(type: DependencyReportTask) {}
 

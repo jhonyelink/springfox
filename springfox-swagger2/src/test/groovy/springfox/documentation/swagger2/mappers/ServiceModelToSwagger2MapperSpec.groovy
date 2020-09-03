@@ -30,7 +30,7 @@ class ServiceModelToSwagger2MapperSpec extends Specification implements MapperSu
       def mappedOperation = mappedPath.value.post
       def builtOperation = built.apis.first().operations.first()
     then:
-      mappedPath.key == builtDescription.path
+      mappedPath.key.startsWith(builtDescription.path)
       mappedOperation.operationId == builtOperation.uniqueId
       mappedOperation.security.size() == builtOperation.securityReferences.size()
       mappedOperation.security.first()containsKey("basic")
@@ -118,7 +118,7 @@ class ServiceModelToSwagger2MapperSpec extends Specification implements MapperSu
       def mapped = sut.mapDocumentation(documentation)
     then:
       mapped.basePath == documentation.basePath
-      mapped.paths.containsKey("/api-path")
+      mapped.paths.containsKey("/api-path [POST default-controller]")
       mapped.definitions.containsKey("m1")
       mapped.tags.isEmpty()
       mapped.info == null
